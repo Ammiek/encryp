@@ -1,0 +1,39 @@
+encryption_tutorial.php
+
+<?php
+
+class Encryption_Tutorial extends CI_Controller {
+
+public function __construct() {
+parent:: __construct();
+$this->load->helper('form');
+$this->load->library('encrypt');
+$this->load->library('form_validation');
+}
+
+public function index() {
+$this->load->view('show_form');
+}
+
+public function key_encoder() {
+
+$this->form_validation->set_rules('key', 'Message', 'trim|required|xss_clean');
+if ($this->form_validation->run() == FALSE) {
+$this->load->view('show_form');
+} else {
+$key = $this->input->post('key');
+$data['encrypt_value'] = $this->encrypt->encode($key);
+$this->load->view('show_form', $data);
+}
+}
+
+public function key_decoder() {
+
+$encrypt_key = $this->input->post('encrypt_key');
+$data['decrypt_value'] = $this->encrypt->decode($encrypt_key);
+$this->load->view('show_form', $data);
+}
+
+}
+
+?>
